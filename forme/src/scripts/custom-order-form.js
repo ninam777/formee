@@ -77,70 +77,22 @@ class CustomOrderForm extends React.Component {
             var validationResult = this.refs.form.validate();
             console.log(validationResult);
         }
-        //console.log(value.billNumber);
-        var items = [
-        ];
-        var item = {
-            orderNumber: "",
-            details: "",
-            measure: "",
-            quantity:"",
-            price:"",
-            summaryPrice:"",
-            id:""
-        };
-
-        for (var i = 0; i < value.items.length; i++) {
-            item.orderNumber = value.items[i].orderNumber;
-            item.id = value.items[i].id;
-            item.details = value.items[i].details;
-            item.measure = value.items[i].measure;
-            item.quantity = value.items[i].quantity;
-            item.price = value.items[i].price;
-            item.summaryPrice = value.items[i].summaryPrice;
-            items.push(item);
-        }   
-
+        
         var data = {
             billNumber: value.billNumber,
             number: value.number,
             deliveryDate: value.deliveryDate,
             deliveryType: value.deliveryType,
             distributor: value.distributor,
-            myCompany:{
-                name: value.myCompany.name,
-                town: value.myCompany.town,
-                adress: {
-                    street: value.myCompany.adress.street,
-                    number: value.myCompany.adress.number,
-                    zip: value.myCompany.adress.zip,
-                    country: value.myCompany.adress.country
-                }
-            },
-            partnerCompany:{
-                name: value.partnerCompany.name,
-                town: value.partnerCompany.town,
-                adress: {
-                    street: value.partnerCompany.adress.street,
-                    number: value.partnerCompany.adress.number,
-                    zip: value.partnerCompany.adress.zip,
-                    country: value.partnerCompany.adress.country
-                }  
-            },
-            items: items
+            myCompany:value.myCompany,
+            partnerCompany:value.partnerCompany,
+            items: value.items
         }
 
         function action(response) {
-            //responseType = 'arraybuffer';
-            alert('asd' + response);
             var blob = new Blob([response], {type:'blob'});
-            alert(blob);
             fs.saveAs(blob, "order.xlsx");
         };
-
-        // var parseBlob = function (response) {
-        //   return response.blob();
-        // };
 
         function checkStatus(response) {
             if (response.status >= 200 && response.status < 300) {
@@ -160,15 +112,9 @@ class CustomOrderForm extends React.Component {
            }
             
         };
-        // var downloadFile = function () {
-        //     return fetch('http://localhost:3000/generate')
-        //     .then(checkStatus)
-        //     .then(parseBlob)
-        //     .then(action);
-        // };
-
+        
         var dataSend = '' + JSON.stringify(data);
-        alert(dataSend);
+        
         fetch('http://localhost:3000/generate',{
             method:'post',
             headers: {
@@ -188,16 +134,7 @@ class CustomOrderForm extends React.Component {
         }).catch(function(err){
             alert('request failed ' + err);
         });
-
-
-        // fetch('/')
-        // //.then(ispisi)
-        // .then(function(response){
-        //     return response.blob();
-        // })
-        // .then(action);
         
-
     }
     onChange(value, path, kind){
         console.log({

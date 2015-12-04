@@ -51,21 +51,23 @@ var Address = t.struct({
     country: t.String
 });
 
-var OrderItem = t.struct({
-    orderNumber: t.Number,
-    id: t.Number,
-    details: t.String,
-    measure: t.String,
-    quantity: PositiveNumber,
-    price: PositiveNumber,
-    summaryPrice: PositiveNumber,
-});
-
 var Company = t.struct({
     name: t.String,
     town: t.String,
     adress: Address
 });
+
+var OrderItem = t.list(
+    t.struct({
+        orderNumber: t.Number,
+        id: t.Number,
+        details: t.String,
+        measure: t.String,
+        quantity: PositiveNumber,
+        price: PositiveNumber,
+        summaryPrice: PositiveNumber
+    })
+);
 
 var Order = t.struct({
     myCompany: Company,
@@ -74,7 +76,7 @@ var Order = t.struct({
     billNumber: t.Number,
     deliveryDate: t.Date,
     deliveryType: DeliveryMethod,
-    items: t.list(OrderItem),
+    items: OrderItem,
     distributor: t.String
     });
 

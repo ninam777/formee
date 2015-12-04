@@ -43,8 +43,7 @@ app.use(bodyParser.text());
 app.post('/generate',cors, function (req, res) {
   var data = req.body;
 	console.log('successfully received request!');
-  console.log('request body is '+data.myCompany.name);
-
+  
   var values = {
     number: data.number,
     billNumber: data.billNumber,
@@ -74,22 +73,13 @@ app.post('/generate',cors, function (req, res) {
     }]
   };
 
-  var vrednosti = {
-  	ime: data.myCompany.name,
-  	prezime: data.partnerCompany.name
-  };
-
 	fs.readFile(path.join(__dirname, 'templates', 'naruci.xlsx'), function(err, data) {
     var template = new XlsxTemplate(data);
 
     var sheetNumber = 1;
-    //console.log(data.myCompany.name);
     
-    console.log(values);
-    console.log(vrednosti);
-
     template.substitute(sheetNumber, values);
-    //console.log(data);
+    
     var data = template.generate();
 
     
